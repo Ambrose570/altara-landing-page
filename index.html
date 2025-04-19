@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altara | AI Automation for High-Ticket SaaS</title>
+
+    <!-- Favicon (Optional but Recommended) -->
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Base Styles & Variables --- */
+        :root {
+            /* Color Palette */
+            --primary: #3b82f6;         /* Main Accent Blue */
+            --primary-dark: #2563eb;    /* Darker Blue for gradients/hovers */
+            --secondary: #0f172a;       /* Very Dark Blue (Near Black) */
+            --accent: #60a5fa;          /* Lighter Blue for highlights */
+            --text: #e2e8f0;            /* Main Text Color (Light Grey/Off-white) */
+            --text-light: #94a3b8;      /* Lighter Text Color (Subheadings, etc.) */
+            --bg: #0B1120;              /* Main Dark Background */
+            --bg-alt-base: #111827;     /* Slightly Lighter Dark BG Base */
+            --bg-card: rgba(30, 41, 59, 0.75); /* Card background - slightly less transparent for readability */
+            --border: #1e293b;          /* Dark Border Color */
+            --star-color: var(--primary);/* Color for static star icons */
+            --placeholder-bg: #1e293b;  /* Background for placeholders like SVG */
+            --placeholder-border: rgba(59, 130, 246, 0.3); /* Border for placeholders */
+            --glow-color-primary: rgba(59, 130, 246, 0.35);/* Glow effect color for buttons/cards */
+            --glow-color-ambient: rgba(59, 130, 246, 0.15);/* Ambient background glow color */
+
+            /* Transparent Section Backgrounds (Low Alpha = More Transparent) */
+            --bg-alt-transparent: rgba(17, 24, 39, 0.65);      /* For .section-alt, #why-altara */
+            --bg-cta-gradient-start: rgba(15, 23, 42, 0.7);      /* For .cta */
+            --bg-cta-gradient-end: rgba(25, 35, 55, 0.7);        /* For .cta */
+            --bg-footer-transparent: rgba(15, 23, 42, 0.75);   /* For footer */
+
+            /* Backdrop Blur for Sections (Frosted Glass Effect) */
+            --section-backdrop-blur: 4px; /* REDUCED: Less intense blur */
+
+            /* Timing & Easing */
+            --transition-fast: 0.2s ease-in-out;
+            --transition-medium: 0.3s ease;
+            --transition-slow: 0.4s ease;
+        }
+
+        /* --- Global Resets & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Apply base font to everything */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Enable smooth scrolling for anchor links */
+            font-size: 100%; /* Base font size */
+        }
+
+        body {
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.6; /* Improve readability */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            /* Subtle radial gradients fixed in viewport */
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(96, 165, 250, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            position: relative; /* Needed for pseudo-element */
+            -webkit-font-smoothing: antialiased; /* Improve font rendering on WebKit */
+            -moz-osx-font-smoothing: grayscale; /* Improve font rendering on Firefox */
+        }
+
+        /* Ambient background glow */
+        body::before {
+            content: '';
+            position: fixed; /* Stays in viewport */
+            top: 50%;
+            left: 50%;
+            width: 150vmax; /* Very large to cover viewport */
+            height: 150vmax;
+            background: radial-gradient(circle, var(--glow-color-ambient) 0%, transparent 65%);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 0; /* Start faded out */
+            animation: ambientGlow 12s infinite alternate ease-in-out;
+            z-index: -2; /* Behind everything */
+            pointer-events: none; /* Doesn't interfere with interaction */
+        }
+        @keyframes ambientGlow {
+            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* --- Typography & Links --- */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text);
+            text-wrap: balance; /* Improve heading line breaking */
+        }
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem); /* Responsive font size */
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            /* Gradient text effect */
+            background: linear-gradient(to right, #f8fafc, var(--accent));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; text-fill-color: transparent;
+        }
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #f8fafc, var(--accent));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+        h3 {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 1rem;
+            max-width: 65ch; /* Improve paragraph readability width */
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color var(--transition-medium);
+        }
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* --- Layout & Containers --- */
+        .container {
+            width: 100%;
+            max-width: 1100px; /* Standard max width */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        /* --- Button Styles --- */
+        .btn {
+            display: inline-flex; /* Allows alignment of icon and text */
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            text-align: center;
+            white-space: nowrap; /* Prevent button text wrapping */
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.2);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+            color: white;
+        }
+        .btn-icon {
+            margin-left: 0.5rem;
+            transition: transform var(--transition-medium);
+        }
+        .btn:hover .btn-icon {
+            transform: translateX(4px);
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed; /* Sticks to the top */
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 100; /* Above hero content */
+            padding: 1rem 0;
+            transition: padding var(--transition-medium), background-color var(--transition-medium), box-shadow var(--transition-medium);
+            background-color: rgba(11, 17, 32, 0.8); /* Start slightly transparent */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            will-change: padding; /* Optimize animation */
+        }
+        /* Header style when scrolled */
+        header.scrolled {
+            padding: 0.8rem 0;
+            background-color: rgba(11, 17, 32, 0.95); /* More opaque when scrolled */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- Desktop Navigation --- */
+        .nav-links {
+            display: flex; /* Hidden on mobile via media query */
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-light);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative; /* For underline effect */
+        }
+        /* Underline hover effect */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 0;
+            background-color: var(--primary);
+            transition: width var(--transition-medium);
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--text); }
+        /* Call to Action Button in Nav */
+        .nav-links .btn-primary {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+        }
+        .nav-links .btn-primary:hover::after { width: 0; } /* Don't underline button */
+
+        /* --- Mobile Navigation Trigger --- */
+        .mobile-menu-btn {
+            display: none; /* Shown on mobile via media query */
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+            padding: 0.5rem; /* Increase tap area */
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            padding: 10rem 0 6rem; /* Top padding accounts for header */
+            overflow: hidden;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        .hero-content {
+            position: relative; /* Sits above .space-bg */
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 { margin-bottom: 1.5rem; }
+        .hero .subheadline {
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            max-width: 650px; /* Constrain width */
+            margin-left: auto; margin-right: auto;
+            color: var(--text-light);
+        }
+        .hero-btn { /* Specific styling for hero button */
+            padding: 0.8rem 1.8rem;
+            font-size: 1.05rem;
+        }
+
+        /* --- Hero Space Background --- */
+        .space-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0; /* Cover hero section */
+            z-index: 0; /* Behind hero content */
+            overflow: hidden;
+            /* Initial state for JS parallax/blur */
+            transform: translateY(0px);
+            filter: blur(0px);
+            /* Smooth transitions driven by JS */
+            transition: transform 0.1s linear, filter 0.1s linear;
+            will-change: transform, filter; /* Hint browser about animations */
+        }
+
+        /* --- Star Layers (Animated Background) --- */
+        .stars, .stars-layer-2, .stars-layer-3, .stars-layer-4, .stars-layer-5, .stars-layer-6 {
+            position: absolute;
+            width: 200%; height: 200%; /* Larger than container for movement */
+            background-repeat: repeat;
+            animation: scrollStars 60s linear infinite; /* CSS animation */
+            z-index: -1; /* Behind orbits */
+            will-change: transform; /* Optimize animation */
+            pointer-events: none; /* Prevent interaction */
+        }
+        /* Individual Star Layer Definitions (background-image, size, opacity, animation-duration) */
+        .stars         { background: radial-gradient(1px 1px at 5% 10%, var(--text-light), transparent), radial-gradient(1px 1px at 10% 20%, var(--text-light), transparent), radial-gradient(2px 2px at 50% 60%, var(--text), transparent), radial-gradient(1px 1px at 80% 90%, var(--text-light), transparent), radial-gradient(2px 2px at 90% 95%, var(--text), transparent); background-size: 500px 500px; opacity: 0.4; animation-duration: 80s; }
+        .stars-layer-2 { background: radial-gradient(1px 1px at 15% 15%, var(--text), transparent), radial-gradient(1px 1px at 25% 25%, var(--text-light), transparent), radial-gradient(1px 1px at 95% 95%, var(--text-light), transparent); background-size: 400px 400px; opacity: 0.3; animation-duration: 60s; }
+        .stars-layer-3 { background: radial-gradient(2px 2px at 8% 12%, var(--accent), transparent), radial-gradient(2px 2px at 18% 22%, var(--primary), transparent), radial-gradient(2px 2px at 88% 92%, var(--accent), transparent); background-size: 600px 600px; opacity: 0.2; animation-duration: 100s; }
+        .stars-layer-4 { background: radial-gradient(1px 1px at 3% 7%, var(--text), transparent), radial-gradient(1px 1px at 13% 17%, var(--text-light), transparent), radial-gradient(1px 1px at 93% 97%, var(--text-light), transparent); background-size: 300px 300px; opacity: 0.3; animation-duration: 45s; }
+        .stars-layer-5 { background: radial-gradient(1px 1px at 2% 5%, var(--text-light), transparent), radial-gradient(1px 1px at 12% 15%, var(--text), transparent), radial-gradient(1px 1px at 92% 95%, var(--text), transparent); background-size: 250px 250px; opacity: 0.25; animation-duration: 35s; }
+        .stars-layer-6 { background: radial-gradient(1px 1px at 4% 8%, var(--primary), transparent), radial-gradient(1px 1px at 14% 18%, var(--accent), transparent), radial-gradient(1px 1px at 94% 98%, var(--accent), transparent); background-size: 700px 700px; opacity: 0.15; animation-duration: 120s; }
+        /* Keyframes for star layer vertical scrolling */
+        @keyframes scrollStars { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+        /* --- Shooting Stars --- */
+        .shooting-star { position: absolute; width: 100px; height: 1px; background: linear-gradient(to right, transparent, var(--accent), transparent); animation: shooting 8s linear infinite; opacity: 0; filter: blur(0.5px); z-index: -1; will-change: transform, opacity; pointer-events: none; }
+        /* Positioning & Delay (Nth adjusted for 6 star layers) */
+        .space-bg > .shooting-star:nth-of-type(7) { top: 20%; left: -100px; animation-delay: 1s; }
+        .space-bg > .shooting-star:nth-of-type(8) { top: 50%; left: -100px; animation-delay: 4s; }
+        .space-bg > .shooting-star:nth-of-type(9) { top: 80%; left: -100px; animation-delay: 7s; }
+        /* Animation definition */
+        @keyframes shooting { 0% { transform: translateX(0) rotate(30deg); opacity: 0; } 5% { opacity: 0.8; } 25% { transform: translateX(1200px) rotate(30deg); opacity: 0; } 100% { transform: translateX(1200px) rotate(30deg); opacity: 0; } }
+
+        /* --- Orbiting Stars --- */
+        .orbit { position: absolute; top: 50%; left: 50%; border: 1px solid rgba(59, 130, 246, 0.08); border-radius: 50%; pointer-events: none; transform-origin: center center; z-index: 0; /* Above stars, below content */ will-change: transform; }
+        /* Sizing (Nth adjusted for 6 star layers + 3 shooting stars) */
+        .space-bg > .orbit:nth-of-type(10) { width: 3000px; height: 3000px; margin: -1500px 0 0 -1500px; }
+        .space-bg > .orbit:nth-of-type(11) { width: 2400px; height: 2400px; margin: -1200px 0 0 -1200px; }
+        .space-bg > .orbit:nth-of-type(12) { width: 1800px; height: 1800px; margin: -900px 0 0 -900px; }
+        .space-bg > .orbit:nth-of-type(13) { width: 1200px; height: 1200px; margin: -600px 0 0 -600px; }
+        .space-bg > .orbit:nth-of-type(14) { width: 900px; height: 900px; margin: -450px 0 0 -450px; }
+        .space-bg > .orbit:nth-of-type(15) { width: 600px; height: 600px; margin: -300px 0 0 -300px; }
+        /* Star Orbit Container (Rotated by JS) */
+        .star-orbit { position: absolute; width: 100%; height: 100%; will-change: transform; }
+        /* The Visible Star */
+        .star { position: absolute; width: 8px; height: 8px; top: -4px; left: 50%; transform: translateX(-4px); }
+        /* Star's Pulsing Glow */
+        .star::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--primary); border-radius: 50%; box-shadow: 0 0 8px 2px rgba(96, 165, 250, 0.8); animation: starPulseOrbit 2s infinite alternate; will-change: transform, opacity, box-shadow; }
+        @keyframes starPulseOrbit { 0% { opacity: 0.6; transform: scale(0.8); box-shadow: 0 0 6px 1px rgba(96, 165, 250, 0.6); } 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 12px 3px rgba(96, 165, 250, 1); } }
+
+        /* --- Hero Image Placeholder (SVG Mockup) --- */
+        .hero-image-placeholder { margin-top: 4rem; width: 100%; max-width: 700px; min-height: 400px; background-color: var(--placeholder-bg); border-radius: 12px; margin-left: auto; margin-right: auto; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--text-light); font-style: italic; border: 1px solid var(--placeholder-border); padding: 10px; position: relative; z-index: 1; opacity: 0; transform: translateY(20px); animation: fadeInUp 1s 0.3s forwards; will-change: opacity, transform; }
+        .hero-image-placeholder svg { max-width: 100%; height: auto; max-height: 380px; position: relative; z-index: 1; display: block; /* Prevents potential bottom space */ }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- General Section Styles --- */
+        .section {
+            position: relative; /* Needed for highlight pseudo-element */
+            padding: 5rem 0;
+            overflow: hidden;
+            z-index: 1; /* Sit above body background effects */
+        }
+
+        /* NEW: Section Highlight Effect (Applied via JS) */
+        .section-highlight::before {
+            content: "";
+            position: absolute;
+            inset: -2px; /* Cover area including border */
+            border: 2px solid var(--primary);
+            border-radius: 8px; /* Optional: match potential section rounding */
+            box-shadow: 0 0 15px 4px var(--glow-color-primary);
+            opacity: 0; /* Start invisible */
+            animation: highlight-fade 1.5s ease-out forwards;
+            z-index: -1; /* Behind section content */
+            pointer-events: none;
+        }
+        @keyframes highlight-fade {
+            0% { opacity: 0.8; } /* Start visible */
+            100% { opacity: 0; }   /* Fade out */
+        }
+
+        /* Section Backgrounds with Backdrop Filter */
+        .section-alt {
+            background-color: var(--bg-alt-transparent);
+            backdrop-filter: blur(var(--section-backdrop-blur));
+        }
+        .section#why-altara {
+            background-color: var(--bg-alt-transparent);
+            backdrop-filter: blur(var(--section-backdrop-blur));
+        }
+        .cta {
+            padding: 5rem 0; text-align: center; position: relative; overflow: hidden;
+            background: linear-gradient(var(--bg-cta-gradient-start), var(--bg-cta-gradient-end)),
+                        url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%231e293b" fill-opacity="0.1"%3E%3Crect x="0" y="0" width="50" height="50" /%3E%3Crect x="50" y="50" width="50" height="50" /%3E%3C/g%3E%3C/svg%3E');
+            backdrop-filter: blur(var(--section-backdrop-blur));
+            z-index: 1;
+        }
+        footer {
+            background-color: var(--bg-footer-transparent);
+            backdrop-filter: blur(var(--section-backdrop-blur));
+            color: var(--text-light); padding: 4rem 0 2rem;
+            position: relative; overflow: hidden; border-top: 1px solid var(--border);
+            z-index: 1;
+        }
+
+        /* Section Header Styles */
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { position: relative; display: inline-block; margin-bottom: 1rem; }
+        /* Underline for H2 */
+        .section-header h2::after { content: ''; position: absolute; bottom: -0.5rem; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 3px; }
+        .section-header p, .section-header-subtext { max-width: 600px; margin: -0.5rem auto 1.5rem auto; /* Pull up slightly */ color: var(--text-light); }
+
+        /* --- How It Works Section (Expandable Cards) --- */
+        .cards {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 2rem;
+             margin-top: 3rem; /* ADDED THIS LINE TO PREVENT CLIPPING */
+        }
+        .card { background: var(--bg-card); border-radius: 1rem; padding: 2rem 1.5rem; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); transition: transform var(--transition-slow), box-shadow var(--transition-slow), border-color var(--transition-slow), padding-bottom var(--transition-slow); position: relative; overflow: hidden; z-index: 2; /* Above section bg blur */ border: 1px solid rgba(59, 130, 246, 0.15); backdrop-filter: blur(8px); height: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: default; will-change: transform, box-shadow, padding; }
+        .expanded-desc { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.4s ease-in 0.1s, margin-top 0.5s ease-out; width: 100%; margin-top: 0; will-change: max-height, opacity; }
+        .expanded-desc p { font-size: 0.9rem; color: var(--text); margin-bottom: 0; line-height: 1.5; }
+        .card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25), 0 0 25px var(--glow-color-primary); border-color: rgba(59, 130, 246, 0.4); padding-bottom: 2.5rem; }
+        .card:hover .expanded-desc { max-height: 200px; opacity: 1; margin-top: 1.5rem; }
+        .card-icon { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15)); border-radius: 50%; margin-bottom: 1.5rem; color: var(--primary); font-size: 1.5rem; position: relative; border: 1px solid rgba(59, 130, 246, 0.2); transition: background var(--transition-medium); }
+        .card:hover .card-icon { background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.25)); }
+        .card h3 { margin-bottom: 0.8rem; font-size: 1.2rem; color: var(--text); }
+        .card .short-desc { margin-bottom: 0; font-size: 0.95rem; color: var(--text-light); transition: opacity var(--transition-medium); }
+
+        /* --- Why Choose Us Section (Features List) --- */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+        .feature { display: flex; align-items: flex-start; gap: 1rem; background: var(--bg-card); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(59, 130, 246, 0.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium); height: 100%; will-change: transform, box-shadow; z-index: 1; /* Above section bg blur */}
+        .feature:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 10px rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.25); }
+        .feature-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.1)); border-radius: 50%; color: var(--primary); font-size: 0.9rem; margin-top: 0.2rem; border: 1px solid rgba(59, 130, 246, 0.15); flex-shrink: 0; }
+        .feature-content { flex: 1; }
+        .feature-content h4 { margin-bottom: 0.3rem; color: var(--text); }
+        .feature-content p { margin-bottom: 0; font-size: 0.9rem; color: var(--text-light); max-width: none; /* Allow feature text to use full width */ }
+
+        /* --- CTA Content Specific Styles --- */
+        .cta-content { position: relative; z-index: 2; max-width: 650px; margin: 0 auto; }
+        .cta h2 { margin-bottom: 1.5rem; }
+        .cta p { margin: 0 auto 2.5rem auto; font-size: 1.1rem; color: var(--text-light); }
+
+        /* --- Footer Styles --- */
+        .footer-stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.1; z-index: 0; pointer-events: none; }
+        .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; position: relative; z-index: 1; align-items: start; }
+        /* Mobile first defaults */
+        .footer-about, .footer-links, .footer-contact { min-height: 150px; text-align: center; }
+        .footer-links ul { display: inline-block; text-align: left; padding: 0; list-style: none; }
+        .footer-contact a { justify-content: center; } .social-links { justify-content: center; }
+        /* Footer Content */
+        .footer-about .logo { margin-bottom: 1rem; display: inline-flex; align-items: center; color: var(--text); }
+        .footer-about .logo img { vertical-align: middle; height: 50px; /* Ensure logo size is consistent */ }
+        .footer-about p { font-size: 0.9rem; margin-bottom: 0; max-width: none; }
+        .footer-links h4, .footer-contact h4 { margin-bottom: 1rem; font-size: 1.05rem; color: var(--text); font-weight: 600; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: var(--text-light); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--primary); }
+        .footer-contact a { font-size: 0.95rem; color: var(--text-light); display: inline-flex; align-items: center; gap: 0.7em; margin-bottom: 0.8rem; word-break: break-word; }
+        .footer-contact a:hover { color: var(--primary); }
+        .footer-contact i { color: var(--primary); width: 18px; text-align: center; flex-shrink: 0; }
+        /* Social Links corrected position and structure */
+        .social-links { display: flex; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; z-index: 1; /* Ensure above other footer elements if needed */ }
+        .social-link { display: inline-flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; color: var(--text-light); transition: all var(--transition-medium); font-size: 0.9rem; border: 1px solid var(--border); }
+        .social-link:hover { background: var(--primary); color: white; transform: translateY(-3px); border-color: var(--primary); }
+        /* Copyright */
+        .copyright { text-align: center; padding-top: 2rem; margin-top: 2.5rem; border-top: 1px solid var(--border); color: var(--text-light); font-size: 0.85rem; position: relative; z-index: 1; }
+        .copyright p { margin-bottom: 0; }
+
+        /* --- Responsive Design Media Queries --- */
+        /* Medium screens and up (Tablets, small desktops) */
+        @media (min-width: 768px) {
+            .footer-container { grid-template-columns: 1fr auto 1fr; text-align: left; }
+            .footer-about { justify-self: start; text-align: left;}
+            .footer-links { justify-self: center; text-align: center;}
+            .footer-contact { justify-self: end; text-align: right;}
+            .footer-links ul { text-align: left; }
+            .footer-contact a { justify-content: flex-end; width: auto;}
+            .social-links { justify-content: flex-end; }
+            .section { padding: 6rem 0; } .cta { padding: 6rem 0; }
+        }
+        /* Large screens (Desktops) */
+        @media (min-width: 992px) { .nav-links { display: flex; } .mobile-menu-btn { display: none; } }
+        /* Medium screens and below (Tablets portrait, phones landscape) */
+        @media (max-width: 991px) { .nav-links { display: none; } .mobile-menu-btn { display: block; } }
+        /* Small screens (Phones portrait etc) */
+        @media (max-width: 767px) {
+            .footer-container { grid-template-columns: 1fr; }
+            .footer-about, .footer-links, .footer-contact { min-height: auto; text-align: center; }
+            .footer-links ul { display: inline-block; text-align: left; }
+            .footer-contact a { justify-content: center; }
+            .social-links { justify-content: center; }
+            .hero { padding: 8rem 0 4rem; }
+            .hero h1 { font-size: 2.2rem; } .hero .subheadline { font-size: 1.05rem; }
+            .hero-image-placeholder { min-height: 300px; }
+            .cards, .features { grid-template-columns: 1fr; }
+            .section { padding: 4rem 0; } .cta { padding: 4rem 0; }
+        }
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; } h2 { font-size: 1.8rem; }
+            .hero { padding: 7rem 0 3rem; }
+            .hero-image-placeholder { min-height: 250px; }
+            .btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+            .hero-btn { padding: 0.7rem 1.5rem; }
+            .footer-container { gap: 2rem; }
+            .card:hover { padding-bottom: 2rem; }
+        }
+
+        /* --- Mobile Menu Styles --- */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh; background: var(--bg-alt-base); /* Changed to base for better opacity */ z-index: 1000; padding: 2rem; transition: right var(--transition-slow) cubic-bezier(0.23, 1, 0.32, 1); box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3); overflow-y: auto; border-left: 1px solid var(--border); }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; padding: 5px; }
+        .mobile-menu-links { margin-top: 4rem; display: flex; flex-direction: column; gap: 1rem; }
+        .mobile-menu-links a { color: var(--text-light); font-weight: 500; font-size: 1.1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border); transition: color var(--transition-medium); }
+        .mobile-menu-links a:last-child { border-bottom: none; } .mobile-menu-links a.btn { border-bottom: none; margin-top: 1rem; text-align: center; } .mobile-menu-links a:hover { color: var(--primary); }
+
+        /* --- Overlay for Mobile Menu --- */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 999; opacity: 0; visibility: hidden; transition: opacity var(--transition-slow), visibility 0s linear var(--transition-slow); backdrop-filter: blur(4px); }
+        .overlay.active { opacity: 1; visibility: visible; transition: opacity var(--transition-slow); }
+
+        /* --- Scroll Animation Helper Classes --- */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; will-change: opacity, transform; }
+        .stagger-item { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; will-change: opacity, transform; }
+        .fade-in.active, .stagger-item.active { opacity: 1; transform: translateY(0); }
+        /* Stagger Delays */
+        .stagger-delay-1 { transition-delay: 0.1s !important; } .stagger-delay-2 { transition-delay: 0.2s !important; } .stagger-delay-3 { transition-delay: 0.3s !important; } .stagger-delay-4 { transition-delay: 0.4s !important; } .stagger-delay-5 { transition-delay: 0.5s !important; } .stagger-delay-6 { transition-delay: 0.6s !important; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="#" class="logo" aria-label="Altara Home">
+                <img src="https://cdn.discordapp.com/attachments/1290461382457692210/1362623720203616316/SimplifiedAltaraLogo.png?ex=680311bb&is=6801c03b&hm=2546cb84c1f4183b30123568f8bf29d8f24951d00332335f03ef2baf56931fa3&" alt="Altara Logo" style="height: 50px;">
+            </a>
+            <!-- Desktop Navigation -->
+            <nav class="nav-links" aria-label="Main Navigation">
+                <a href="#how-it-works">How It Works</a>
+                <a href="#why-altara">Why Choose Us</a>
+                <a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" aria-label="Open Menu" aria-expanded="false" aria-controls="mobile-menu-nav">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (Initially hidden) -->
+    <div class="overlay" id="mobile-menu-overlay" aria-hidden="true"></div>
+    <nav class="mobile-menu" id="mobile-menu-nav" aria-hidden="true">
+        <button class="mobile-menu-close" aria-label="Close Menu">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="mobile-menu-links">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#why-altara">Why Choose Us</a>
+            <a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <!-- Background Elements -->
+        <div class="space-bg" aria-hidden="true">
+            <div class="stars"></div> <div class="stars-layer-2"></div> <div class="stars-layer-3"></div>
+            <div class="stars-layer-4"></div> <div class="stars-layer-5"></div> <div class="stars-layer-6"></div>
+            <div class="shooting-star"></div> <div class="shooting-star"></div> <div class="shooting-star"></div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+            <div class="orbit"> <div class="star-orbit"> <div class="star"></div> </div> </div>
+        </div>
+        <!-- Hero Content -->
+        <div class="container hero-content">
+            <h1 class="fade-in active">Automate the Entire Client Journey from Outreach to Onboarding</h1>
+            <p class="subheadline fade-in active stagger-delay-1">
+                We build AI-powered systems for high-ticket SaaS companies to scale smarter — without hiring more people.
+            </p>
+            <a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer" class="btn btn-primary hero-btn fade-in active stagger-delay-2">
+                Book a Free Systems Call <i class="fas fa-arrow-right btn-icon" aria-hidden="true"></i>
+            </a>
+            <!-- Mockup Image -->
+            <div class="hero-image-placeholder fade-in active stagger-delay-3" role="img" aria-label="Dashboard Mockup">
+                <!-- Embedded SVG Mockup -->
+                <svg width="100%" height="100%" viewBox="0 0 700 400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                    <style>
+                        .mockup-bg { fill: var(--placeholder-bg, #1e293b); } .mockup-border { stroke: var(--placeholder-border); stroke-width: 1; }
+                        .mockup-card { fill: rgba(30, 41, 59, 0.8); stroke: var(--border); stroke-width: 0.5; }
+                        .mockup-text-light { fill: var(--text-light); font-family: 'Inter', sans-serif; font-size: 12px; }
+                        .mockup-text-primary { fill: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;}
+                        .mockup-line-primary { stroke: var(--primary); stroke-width: 1.5; fill: none; } .mockup-line-accent { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+                        .mockup-dot-primary { fill: var(--primary); } .mockup-dot-accent { fill: var(--accent); }
+                        @keyframes pulse { 0% { r: 3; opacity: 0.7; } 50% { r: 4; opacity: 1; } 100% { r: 3; opacity: 0.7; } }
+                        @keyframes drawLine { from { stroke-dashoffset: 300; } to { stroke-dashoffset: 0; } }
+                        .pulse-dot { animation: pulse 2s infinite ease-in-out; }
+                        .draw-line { stroke-dasharray: 300; stroke-dashoffset: 300; animation: drawLine 3s ease-out infinite; animation-delay: 0.5s; } /* FIXED: Changed 'forwards' to 'infinite' */
+                    </style>
+                    <rect class="mockup-bg mockup-border" x="5" y="5" width="690" height="390" rx="12" />
+                    {/* SVG Mockup Elements */}
+                    <rect class="mockup-card" x="20" y="20" width="120" height="360" rx="6" /> <rect x="35" y="40" width="90" height="10" rx="3" fill="var(--text-light)" opacity="0.3"/>
+                    <rect x="35" y="65" width="70" height="8" rx="3" fill="var(--text-light)" opacity="0.2"/> <circle cx="45" cy="120" r="4" class="mockup-dot-primary pulse-dot" style="animation-delay: 0.1s;"/>
+                    <rect x="60" y="116" width="50" height="8" rx="3" fill="var(--text-light)" opacity="0.2"/> <circle cx="45" cy="145" r="4" class="mockup-dot-accent pulse-dot" style="animation-delay: 0.3s;"/>
+                    <rect x="60" y="141" width="50" height="8" rx="3" fill="var(--text-light)" opacity="0.2"/>
+                    <rect class="mockup-card" x="160" y="20" width="160" height="80" rx="6" /> <text class="mockup-text-light" x="175" y="45">Active Flows</text> <text class="mockup-text-primary" x="175" y="75">12</text><circle cx="295" cy="40" r="6" class="mockup-dot-primary pulse-dot" />
+                    <rect class="mockup-card" x="340" y="20" width="160" height="80" rx="6" /> <text class="mockup-text-light" x="355" y="45">Leads / Hour</text> <text class="mockup-text-primary" x="355" y="75">~45</text><polyline class="mockup-line-accent" points="440,70 450,55 460,65 470,50 480,60" />
+                    <rect class="mockup-card" x="520" y="20" width="160" height="80" rx="6" /> <text class="mockup-text-light" x="535" y="45">Success Rate</text> <text class="mockup-text-primary" x="535" y="75">92%</text><rect x="630" y="55" width="35" height="10" rx="3" fill="var(--primary)" opacity="0.8"/><rect x="630" y="40" width="35" height="10" rx="3" fill="var(--primary)" opacity="0.4"/>
+                    <rect class="mockup-card" x="160" y="120" width="520" height="260" rx="6" /> <text class="mockup-text-light" x="175" y="145">Automation Performance</text>
+                    <line x1="180" y1="350" x2="660" y2="350" stroke="var(--border)" stroke-width="1" /> <line x1="180" y1="160" x2="180" y2="350" stroke="var(--border)" stroke-width="1" />
+                    <polyline class="mockup-line-primary draw-line" points="180,300 250,250 320,280 390,220 460,240 530,180 600,200 660,170"/>
+                    <circle cx="390" cy="220" r="3" class="mockup-dot-primary pulse-dot" style="animation-delay: 1s;" /><circle cx="530" cy="180" r="3" class="mockup-dot-primary pulse-dot" style="animation-delay: 1.5s;" /><circle cx="660" cy="170" r="3" class="mockup-dot-primary pulse-dot" style="animation-delay: 2s;" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section section-alt how-it-works" id="how-it-works">
+        <div class="container">
+            <header class="section-header fade-in">
+                <h2>How Altara Transforms Your Pipeline</h2>
+                <p class="section-header-subtext">Hover over each step to see how our AI systems streamline your growth.</p>
+            </header>
+            <div class="cards"> <!-- FIXED: Added margin-top in CSS -->
+                <!-- Card 1 -->
+                <div class="card stagger-item stagger-delay-1">
+                    <div class="card-icon" aria-hidden="true"><i class="fas fa-robot"></i></div>
+                    <h3>1. Cold Outreach Automation</h3>
+                    <p class="short-desc">AI identifies & engages ideal prospects, personalizing outreach at scale.</p>
+                    <div class="expanded-desc"><p>Stop manual prospecting. Our AI scans platforms to pinpoint your ideal customer profile, crafts personalized messages, and initiates contact automatically, massively boosting lead quality without manual effort.</p></div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card stagger-item stagger-delay-2">
+                    <div class="card-icon" aria-hidden="true"><i class="fas fa-filter"></i></div>
+                    <h3>2. Lead Qualification & Routing</h3>
+                    <p class="short-desc">Intelligent systems instantly qualify leads and route them to sales, 24/7.</p>
+                    <div class="expanded-desc"><p>Never miss a hot lead. Our system analyzes inquiries in real-time. Qualified leads are instantly routed to the correct salesperson with context, ensuring rapid follow-up and keeping your team focused.</p></div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card stagger-item stagger-delay-3">
+                    <div class="card-icon" aria-hidden="true"><i class="fas fa-user-check"></i></div>
+                    <h3>3. Client Onboarding Workflows</h3>
+                    <p class="short-desc">Automate welcome sequences, tasks, and check-ins for a seamless experience.</p>
+                    <div class="expanded-desc"><p>Deliver a world-class experience. Automate personalized welcomes, task assignments, resource delivery, and check-ins. This ensures consistency, reduces manual work, minimizes churn, and boosts lifetime value.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section why-choose" id="why-altara">
+        <div class="container">
+            <header class="section-header fade-in">
+                <h2>Why Choose Altara?</h2>
+                <p class="section-header-subtext">We provide more than just software; we build strategic assets for your growth.</p>
+            </header>
+            <div class="features">
+                <div class="feature stagger-item stagger-delay-1"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>Custom AI Systems</h4><p>Tailored automations built for the nuances of high-ticket SaaS.</p></div></div>
+                <div class="feature stagger-item stagger-delay-2"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>Full-Funnel Automation</h4><p>From outreach to onboarding, we connect the dots.</p></div></div>
+                <div class="feature stagger-item stagger-delay-3"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>You Own the System</h4><p>Not another subscription, but a scalable asset you control.</p></div></div>
+                <div class="feature stagger-item stagger-delay-4"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>Built for Results</h4><p>Focused on more leads, faster closes, and smooth onboarding.</p></div></div>
+                <div class="feature stagger-item stagger-delay-5"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>Future-Proof Tech</h4><p>Leveraging cutting-edge AI to keep you ahead.</p></div></div>
+                <div class="feature stagger-item stagger-delay-6"><div class="feature-icon" aria-hidden="true"><i class="fas fa-check"></i></div><div class="feature-content"><h4>Fast Implementation</h4><p>Get your custom system live in weeks, not months.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="section cta" id="cta-final">
+        <div class="container cta-content fade-in">
+            <h2>Ready to Automate Your SaaS Growth?</h2>
+            <p>Eliminate manual bottlenecks. Start scaling intelligently with AI-powered automation. Book your free call now.</p>
+            <a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer" class="btn btn-primary hero-btn">
+                Let's Automate Your Pipeline <i class="fas fa-arrow-right btn-icon" aria-hidden="true"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-stars" aria-hidden="true"></div>
+        <div class="container footer-container">
+            <!-- About Section -->
+            <div class="footer-about">
+                <a href="#" class="logo" aria-label="Altara Home">
+                    <img src="https://cdn.discordapp.com/attachments/1290461382457692210/1362623720203616316/SimplifiedAltaraLogo.png?ex=680311bb&is=6801c03b&hm=2546cb84c1f4183b30123568f8bf29d8f24951d00332335f03ef2baf56931fa3&" alt="Altara Logo">
+                </a>
+                <p>AI-powered automation systems for high-ticket SaaS companies. Scale smarter.</p>
+            </div>
+            <!-- Quick Links Section -->
+            <nav class="footer-links" aria-label="Footer Quick Links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#why-altara">Why Altara</a></li>
+                    <li><a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer">Book a Call</a></li>
+                </ul>
+            </nav>
+           <!-- Contact Section -->
+            <div class="footer-contact">
+                <h4>Get in Touch</h4>
+                <a href="mailto:altara.contactus@gmail.com">
+                    <i class="fas fa-envelope" aria-hidden="true"></i> altara.contactus@gmail.com
+                </a>
+                <a href="https://calendly.com/altara-contactus" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i> Book a Discovery Call
+                </a>
+                <!-- Corrected LinkedIn Text Link -->
+                <a href="https://www.linkedin.com/in/altara/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin-in" aria-hidden="true"></i> LinkedIn
+                </a>
+                 <!-- The social-links div is now gone -->
+            </div>
+                    <!-- Add other social icons here -->
+                    <!-- e.g., <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a> -->
+                </div> <!-- This closing div was mismatched, removed one level -->
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="copyright">
+            <p>© <span id="current-year">2024</span> Altara Agency. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Strict mode helps catch common coding errors
+        'use strict';
+
+        // Wait for the DOM to be fully loaded before executing scripts
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Cache Frequently Accessed Elements ---
+            const header = document.querySelector('header');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuNav = document.getElementById('mobile-menu-nav'); // For aria
+            const overlay = document.querySelector('.overlay');
+            const body = document.body;
+            const spaceBg = document.querySelector('.space-bg');
+            const orbits = document.querySelectorAll('.star-orbit');
+            const animatedElements = document.querySelectorAll('.fade-in, .stagger-item');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+            const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+            const currentYearSpan = document.getElementById('current-year');
+
+            // --- Update Copyright Year ---
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- Header Scroll Effect ---
+            // Adds/removes 'scrolled' class based on scroll position
+            function handleHeaderScroll() {
+                // Use classList.toggle for conciseness
+                header.classList.toggle('scrolled', window.scrollY > 30);
+            }
+            // Attach listener with passive option for performance
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+            // Initial check in case page loads already scrolled
+            handleHeaderScroll();
+
+            // --- Mobile Menu Toggle ---
+            function openMenu() {
+                if (!mobileMenu || !overlay || !mobileMenuNav) return;
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                mobileMenuNav.setAttribute('aria-hidden', 'false'); // Accessibility
+                mobileMenuBtn.setAttribute('aria-expanded', 'true');
+                body.style.overflow = 'hidden'; // Prevent body scroll
+                mobileMenuClose.focus(); // Focus close button when opened
+            }
+            function closeMenu() {
+                if (!mobileMenu || !overlay || !mobileMenuNav) return;
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                mobileMenuNav.setAttribute('aria-hidden', 'true'); // Accessibility
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                body.style.overflow = ''; // Restore body scroll
+                mobileMenuBtn.focus(); // Return focus to the button
+            }
+
+            // Attach listeners if elements exist
+            if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMenu);
+            if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMenu);
+            if (overlay) overlay.addEventListener('click', closeMenu);
+
+            // Close mobile menu on link click
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const href = link.getAttribute('href');
+                    if ((href && href.startsWith('#')) || link.classList.contains('btn-primary')) {
+                        closeMenu();
+                    }
+                });
+            });
+             // Close menu on Escape key
+             document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+
+            // --- Scroll Animations (Intersection Observer) ---
+            // Animates elements when they enter the viewport
+            if (typeof IntersectionObserver !== 'undefined') {
+                const observer = new IntersectionObserver((entries, obs) => { // Pass observer to unobserve
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            obs.unobserve(entry.target); // Stop observing once animated
+                        }
+                    });
+                }, { threshold: 0.1 }); // Trigger when 10% is visible
+
+                animatedElements.forEach(el => observer.observe(el));
+            } else {
+                // Fallback for older browsers: just show elements immediately
+                animatedElements.forEach(el => el.classList.add('active'));
+            }
+
+
+            // --- Smooth Scroll & Section Highlight ---
+            let highlightTimeoutId = null; // To manage the highlight removal timeout
+
+            smoothScrollLinks.forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#') && href.length > 1) {
+                        e.preventDefault(); // Prevent default jump
+                        try {
+                            const targetElement = document.querySelector(href);
+                            if (targetElement) {
+                                // --- Section Highlight Logic ---
+                                // 1. Remove highlight from any previously highlighted section
+                                const currentHighlight = document.querySelector('.section-highlight');
+                                if (currentHighlight) {
+                                    currentHighlight.classList.remove('section-highlight');
+                                }
+                                // 2. Clear any existing timeout to remove the class
+                                if (highlightTimeoutId) {
+                                    clearTimeout(highlightTimeoutId);
+                                }
+                                // 3. Add highlight to the target section
+                                targetElement.classList.add('section-highlight');
+                                // 4. Set timeout to remove the highlight class after animation (1500ms)
+                                highlightTimeoutId = setTimeout(() => {
+                                    targetElement.classList.remove('section-highlight');
+                                    highlightTimeoutId = null; // Reset timeout ID
+                                }, 1500); // Duration matches CSS animation
+
+                                // --- Smooth Scroll Logic ---
+                                const headerHeight = header ? header.offsetHeight : 0;
+                                const offset = 20; // Extra space above section
+                                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
+
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        } catch (error) {
+                            console.error("Error finding or scrolling to element:", href, error);
+                        }
+                    } else if (href === '#') {
+                        e.preventDefault(); // Prevent jump for plain '#' links
+                        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top for home link
+                    }
+                });
+            });
+
+
+            // --- Dynamic Background Effects (Orbits, Parallax, Blur) ---
+            let lastScrollY = window.scrollY; // Store last scroll position
+            let orbitAngles = Array(orbits.length).fill(0); // Initial angles
+            let animationFrameId = null; // ID for canceling animation frame
+
+            // Constants for effect intensity
+            const baseSpeeds = [0.05, -0.04, 0.03, -0.06, 0.07, -0.02]; // Orbit base speeds/directions
+            const scrollSensitivityOrbit = 0.008; // How much scroll affects orbit speed
+            const parallaxFactor = 0.4;          // Hero BG parallax speed (0-1)
+            const blurFactor = 1 / 250;          // Hero BG blur increase rate
+            const maxBlur = 3;                   // Hero BG maximum blur
+
+            // Animation loop function
+            function updateAnimations() {
+                const currentScrollY = window.scrollY;
+                // Calculate scroll difference, limit max influence for stability
+                const deltaY = currentScrollY - lastScrollY;
+                const scrollSpeed = Math.min(Math.abs(deltaY), 50);
+
+                // 1. Update Orbit Rotation
+                orbits.forEach((orbit, i) => {
+                    const baseSpeed = baseSpeeds[i % baseSpeeds.length]; // Cycle speeds
+                    const speedMultiplier = 1 + (scrollSpeed * scrollSensitivityOrbit);
+                    const angleIncrement = baseSpeed * speedMultiplier;
+                    orbitAngles[i] = (orbitAngles[i] + angleIncrement) % 360; // Keep angle 0-360
+                    orbit.style.transform = `rotate(${orbitAngles[i]}deg)`;
+                });
+
+                // 2. Update Hero Background Parallax & Blur
+                if (spaceBg) {
+                    const parallaxOffset = currentScrollY * parallaxFactor;
+                    const blurAmount = Math.min(currentScrollY * blurFactor, maxBlur); // Calculate and cap blur
+                    // Apply using translate3d for potential GPU acceleration
+                    spaceBg.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
+                    spaceBg.style.filter = `blur(${blurAmount}px)`;
+                }
+
+                lastScrollY = currentScrollY; // Update scroll position for next frame
+                // Request the next frame, creating the loop
+                animationFrameId = requestAnimationFrame(updateAnimations);
+            }
+
+            // Start the animation loop only if necessary elements exist
+            if (orbits.length > 0 || spaceBg) {
+                animationFrameId = requestAnimationFrame(updateAnimations);
+            }
+
+            // Optional: Pause animation when tab is not visible to save resources
+            // document.addEventListener('visibilitychange', () => {
+            //     if (document.hidden) {
+            //         cancelAnimationFrame(animationFrameId);
+            //     } else if (orbits.length > 0 || spaceBg) {
+            //         // Restart if needed, ensure lastScrollY is current
+            //         lastScrollY = window.scrollY;
+            //         animationFrameId = requestAnimationFrame(updateAnimations);
+            //     }
+            // });
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+</html>
